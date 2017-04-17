@@ -4,8 +4,8 @@
 void setupDs18b20()
 {
  
-  byte numberOfDevices; // Number of temperature devices found
-  Serial.println(F("Dallas Temperature IC Control Library Demo"));
+  int numberOfDevices; // Number of temperature devices found
+  Serial.println("Dallas Temperature IC Control Library Demo");
 
   // Start up the library
   sensors.begin();
@@ -14,34 +14,34 @@ void setupDs18b20()
   numberOfDevices = sensors.getDeviceCount();
   
   // locate devices on the bus
-  Serial.print(F("Locating devices..."));
+  Serial.print("Locating devices...");
   
-  Serial.print(F("Found "));
+  Serial.print("Found ");
   Serial.print(numberOfDevices, DEC);
-  Serial.println(F(" devices."));
+  Serial.println(" devices.");
 
   // report parasite power requirements
-  Serial.print(F("Parasite power is: ")); 
-  if (sensors.isParasitePowerMode()) Serial.println(F("ON"));
-  else Serial.println(F("OFF"));
+  Serial.print("Parasite power is: "); 
+  if (sensors.isParasitePowerMode()) Serial.println("ON");
+  else Serial.println("OFF");
   
     // Search the wire for address
     if(sensors.getAddress(tempDeviceAddress, 0))
 	{
 	
-		Serial.print(F("Setting resolution to "));
+		Serial.print("Setting resolution to ");
 		Serial.println(TEMPERATURE_PRECISION, DEC);
 		
 		// set the resolution to TEMPERATURE_PRECISION bit (Each Dallas/Maxim device is capable of several different resolutions)
 		sensors.setResolution(tempDeviceAddress, TEMPERATURE_PRECISION);
 		
-		 Serial.print(F("Resolution actually set to: "));
+		 Serial.print("Resolution actually set to: ");
 		Serial.print(sensors.getResolution(tempDeviceAddress), DEC); 
 		Serial.println();
 	}else{
-		Serial.print(F("Found ghost device at "));
+		Serial.print("Found ghost device at ");
 		Serial.print(0, DEC);
-		Serial.print(F(" but could not detect address. Check power and cabling"));
+		Serial.print(" but could not detect address. Check power and cabling");
 	}
  
 }
@@ -59,17 +59,8 @@ float printTemperature()
     // It responds almost immediately. Let's print out the data
    // Use a simple function to print out the data
      float tempC = sensors.getTempC(tempDeviceAddress);
-     Serial.print(F("Temp C: "));
-     Serial.print(tempC);
-     String soma;
-     soma.concat(F(" --- Soma Temperatura["));
-     soma.concat(index);
-     soma.concat(F("]"));
-     soma.concat(mediaTemperatura);
-     Serial.println(soma);
-  
-     mediaTemperatura+=tempC;
-     
+     Serial.print("Temp C: ");
+     Serial.println(tempC);
      return tempC;
   } 
   //else ghost device! Check your power requirements and cabling

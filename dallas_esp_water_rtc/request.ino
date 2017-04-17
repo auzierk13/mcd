@@ -15,70 +15,122 @@
 
 //connect to your wifi network
 
-void connectWifi() {
+void setupWifi() {
 
-  String ssid = "NET_2G7A5441";
-  String password=  "B37A5441";
+  String WIFI_SSID = F("NET_2G7A5441");
+  String WIFI_PASSWORD = F("B37A5441");
 
-  String cmd = "AT+CWJAP_DEF=\"" + ssid + "\",\"" + password + "\"";
+  String cmd = "AT+CWJAP_DEF=\"" + WIFI_SSID + "\",\"" + WIFI_PASSWORD + "\"";
 
   esp.println(cmd);
 
   delay(4000);
+  char ok[]= "OK"; 
+  if (esp.find(ok)) {
 
-  if (esp.find("OK")) {
-
-    Serial.println("Connected!");
+    Serial.println(F("Connected!"));
     Serial.println("Comando= " +cmd);
-    Serial.println("Comando=AT+CIFSR");
+    Serial.println(F("Comando=AT+CIFSR"));
     esp.println("AT+CIFSR");
 
   }
 
   else {
 
-    connectWifi();
+    setupWifi();
 
-    Serial.println("Cannot connect to wifi");
+    Serial.println(F("Cannot connect to wifi"));
   }
 
 }
-  String noSensor;
+  
 
 void coletaDados(){
-  noSensor="";
-  noSensor.concat("GET ");
-  noSensor.concat("/batimento&90");
-  noSensor.concat("/mensagem&Coração acelerado");
-  noSensor.concat("/statusAlerta&true");
-  noSensor.concat("/temperatuera&"); noSensor.concat(printTemperature());
-  noSensor.concat("/time&"); noSensor.concat(getDateTime());
-  noSensor.concat("/tipoalerta&2");
-  noSensor.concat("/umidadade&"); noSensor.concat(printUmidade());
-  noSensor.concat(" HTTP/1.1\r\n");
-  noSensor.concat(" Content-Type: charset=utf-8\r\n");
-  httpGet (); //Envio do GET
+  String noSensor="";
+  noSensor.concat(F("GET "));
 
-}
+////////////////////Tratamento da temperatura////////////////////////////////////
+mediaBPM=80;
+
+if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
+  noSensor.concat(F("/batimento&")); noSensor.concat(mediaBPM);
+  noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(NOALERTA);
+  noSensor.concat(F("/mensagem1&"));noSensor.concat(F(""));
+}else if(mediaBPM> bpm_max){
+    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
+    noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia);
+    noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(HEART);
+    
+  }else if((mediaBPM < bpm_min )){
+    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
+    noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia);
+    noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(HEART);
+        
+  }else{
+    Serial.println(F("Erro na captura da temperatura"));
+ }
 
 
-void httpGet () {
-//  String HOST_PORT   "80";
+////////////////////Tratamento da temperatura////////////////////////////////////
+ if ((mediaTemperatura >= temp_min ) && (mediaTemperatura<= temp_max) ){
+    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
+    noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(NOALERTA);
+    noSensor.concat(F("/mensagem2&"));noSensor.concat(F(""));
+  
+  }else if(mediaTemperatura> temp_max){
+    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
+    noSensor.concat(F("/mensagem2&"));noSensor.concat(FEBRE);
+    noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
+    
+  }else if((mediaTemperatura < temp_min )){
+    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
+    noSensor.concat(F("/mensagem2&"));noSensor.concat(HIPOTERMIA);
+    noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
+        
+  }else{
+    Serial.println(F("Erro na captura da temperatura"));
+ }
+//////////////////////////////////////////////////////////////////////////////
+
+ 
+  noSensor.concat(F("/time&")); noSensor.concat(getDateTime());
+  ////Tratamento de mensagem
+
+////////////////////Tratamento da umidade ///////////////////////////////////
+  if(mediaUmidade<= 30){
+    noSensor.concat(F("/umidade&")); noSensor.concat(mediaUmidade);
+    noSensor.concat(F("/tipoAlerta3&"));noSensor.concat(NOALERTA);
+    noSensor.concat(F("/mensagem3&"));noSensor.concat("");
+  
+  }else{
+    noSensor.concat(F("/umidade&")); noSensor.concat(mediaUmidade);
+    noSensor.concat(F("/tipoAlerta3&"));noSensor.concat(UMIDADE);
+    noSensor.concat(F("/mensagem3&"));noSensor.concat(URINA);
+
+  }
+  
+  
+
+
+  noSensor.concat(F(" HTTP/1.1\r\n"));
+  noSensor.concat(F(" Content-Type: charset=utf-8\r\n"));
+ 
+ //  String HOST_PORT   "80";
   String HOST_NAME= "192.168.0.15";
 
   esp.println("AT+CIPSTART=\"TCP\",\"" + HOST_NAME + "\",80");//start a TCP connection.
+  char receive[] = "OK";
+  if ( esp.find(receive)) {
 
-  if ( esp.find("OK")) {
-
-    Serial.println("TCP connection ready");
+    Serial.println(F("TCP connection ready"));
 
   } delay(1000);
 
 
   
-  Serial.print("GET: ");
+  Serial.print(F("GET: "));
   Serial.println(noSensor);
-  Serial.println("Fim do Get: ");
+  Serial.println(F("Fim do Get: "));
   String sendCmd = "AT+CIPSEND=";//determine the number of caracters to be sent.
 
   esp.print(sendCmd);
@@ -86,13 +138,13 @@ void httpGet () {
   esp.println(noSensor.length() );
 
   delay(500);
-
-  if (esp.find(">")) {
+  char receiveMaior[] = ">";
+  if (esp.find(receive)) {
     Serial.println(noSensor);
-    Serial.println("Sending.."); esp.print(noSensor);
-
-    if ( esp.find("SEND OK")) {
-      Serial.println("Packet sent");
+    Serial.println(F("Sending..")); esp.print(noSensor);
+    char sendOk[] = "SEND OK";
+    if ( esp.find(sendOk)) {
+      Serial.println(F("Packet sent"));
 
       while (esp.available()) {
 
@@ -104,7 +156,7 @@ void httpGet () {
 
       // close the connection
 
-      esp.println("AT+CIPCLOSE");
+      esp.println(F("AT+CIPCLOSE"));
 
     }
   }

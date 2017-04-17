@@ -60,9 +60,9 @@ float printTemperature()
    // Use a simple function to print out the data
      float tempC = sensors.getTempC(tempDeviceAddress);
      Serial.print(F("Temp C: "));
-     Serial.print(tempC);
+     Serial.println(tempC);
      String soma;
-     soma.concat(F(" --- Soma Temperatura["));
+     soma.concat(F("Soma ["));
      soma.concat(index);
      soma.concat(F("]"));
      soma.concat(mediaTemperatura);

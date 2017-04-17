@@ -10,25 +10,16 @@
 // the loop routine runs over and over again forever:
 int printUmidade() {
   // read the input on analog pin 0:
-  float sensorValue = analogRead(WATER_SENSOR);
+  float sensorValue = analogRead(A2);
   // print out the value you read:
 //  Serial.println(sensorValue);
 
 
  float value= (sensorValue/maxAnalog)*100;
  
- Serial.print(F("Sensor Umidade= " )); 
+ Serial.print("Sensor Umidade= " ); 
  Serial.print(value); 
- Serial.print(F("%"));
-
- String soma;
- soma.concat(F(" --- Soma Umidade["));
- soma.concat(index);
- soma.concat(F("]"));
- soma.concat(mediaUmidade);
- Serial.println(soma);
-  
- mediaUmidade+=value;
+ Serial.println("%");
  return value;
  
   

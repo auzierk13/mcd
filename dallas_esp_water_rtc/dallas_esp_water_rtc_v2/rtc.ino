@@ -7,7 +7,7 @@ void setupRTC()  {
 // Informacoes iniciais de data e hora
   // Apos setar as informacoes, comente a linha abaixo
   // (segundos, minutos, hora, dia da semana, dia do mes, mes, ano)
-//  myRTC.setDS1302Time(0, 0, 12, 11, 30, 3, 2017);
+//  myRTC.setDS1302Time(0, 31, 11, 11, 15, 3, 2017);
 }
 
 String getDateTime()  {                                                                                            
