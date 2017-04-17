@@ -49,41 +49,36 @@ void coletaDados(){
   String noSensor="";
   noSensor.concat(F("GET "));
 
-////////////////////Tratamento da temperatura////////////////////////////////////
+////////////////////Tratamento da BPM////////////////////////////////////
 mediaBPM=80;
-
+  noSensor.concat(F("/batimento&")); noSensor.concat(mediaBPM); //envio da frequência cardíaca
 if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
-  noSensor.concat(F("/batimento&")); noSensor.concat(mediaBPM);
   noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(NOALERTA);
-  noSensor.concat(F("/mensagem1&"));noSensor.concat(F(""));
+  noSensor.concat(F("/mensagem1&"));noSensor.concat("");
 }else if(mediaBPM> bpm_max){
-    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
     noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia);
     noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(HEART);
     
   }else if((mediaBPM < bpm_min )){
-    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
-    noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia);
+    noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia); 
     noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(HEART);
         
   }else{
-    Serial.println(F("Erro na captura da temperatura"));
+    Serial.println(F("Erro na captura do batimento"));
  }
 
 
 ////////////////////Tratamento da temperatura////////////////////////////////////
+ noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura); //envio da temperatura
  if ((mediaTemperatura >= temp_min ) && (mediaTemperatura<= temp_max) ){
-    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(NOALERTA);
-    noSensor.concat(F("/mensagem2&"));noSensor.concat(F(""));
+    noSensor.concat(F("/mensagem2&"));noSensor.concat("");
   
   }else if(mediaTemperatura> temp_max){
-    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
     noSensor.concat(F("/mensagem2&"));noSensor.concat(FEBRE);
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
     
   }else if((mediaTemperatura < temp_min )){
-    noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura);
     noSensor.concat(F("/mensagem2&"));noSensor.concat(HIPOTERMIA);
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
         
@@ -97,8 +92,9 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
   ////Tratamento de mensagem
 
 ////////////////////Tratamento da umidade ///////////////////////////////////
+    noSensor.concat(F("/umidade&")); noSensor.concat(mediaUmidade); //envio da umidade
+    
   if(mediaUmidade<= 30){
-    noSensor.concat(F("/umidade&")); noSensor.concat(mediaUmidade);
     noSensor.concat(F("/tipoAlerta3&"));noSensor.concat(NOALERTA);
     noSensor.concat(F("/mensagem3&"));noSensor.concat("");
   
@@ -106,7 +102,6 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
     noSensor.concat(F("/umidade&")); noSensor.concat(mediaUmidade);
     noSensor.concat(F("/tipoAlerta3&"));noSensor.concat(UMIDADE);
     noSensor.concat(F("/mensagem3&"));noSensor.concat(URINA);
-
   }
   
   
