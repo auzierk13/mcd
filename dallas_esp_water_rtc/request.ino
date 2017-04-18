@@ -53,15 +53,19 @@ void coletaDados(){
 mediaBPM=80;
   noSensor.concat(F("/batimento&")); noSensor.concat(mediaBPM); //envio da frequência cardíaca
 if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
-  noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(NOALERTA);
-  noSensor.concat(F("/mensagem1&"));noSensor.concat("");
+  noSensor.concat(F("/tipoAlerta1&")); noSensor.concat(NOALERTA);
+  noSensor.concat(F("/mensagem1&")); noSensor.concat("");
+  digitalWrite(ALERTA_BPM, LOW);   
+
 }else if(mediaBPM> bpm_max){
-    noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(HEART);
-    noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia);
+    noSensor.concat(F("/tipoAlerta1&")); noSensor.concat(HEART);
+    noSensor.concat(F("/mensagem1&")); noSensor.concat(Ritimia); 
+    digitalWrite(ALERTA_BPM, HIGH);   
     
   }else if((mediaBPM < bpm_min )){
-    noSensor.concat(F("/tipoAlerta1&"));noSensor.concat(HEART);
-    noSensor.concat(F("/mensagem1&"));noSensor.concat(Ritimia); 
+    noSensor.concat(F("/tipoAlerta1&")); noSensor.concat(HEART);
+    noSensor.concat(F("/mensagem1&")); noSensor.concat(Ritimia);
+    digitalWrite(ALERTA_BPM, HIGH);    
         
   }else{
     Serial.println(F("Erro na captura do batimento"));
@@ -73,14 +77,16 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
  if ((mediaTemperatura >= temp_min ) && (mediaTemperatura<= temp_max) ){
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(NOALERTA);
     noSensor.concat(F("/mensagem2&"));noSensor.concat("");
-  
+    digitalWrite(ALERTA_TEMP, LOW);
   }else if(mediaTemperatura> temp_max){
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
     noSensor.concat(F("/mensagem2&"));noSensor.concat(FEBRE);
+    digitalWrite(ALERTA_TEMP, HIGH);   
     
   }else if((mediaTemperatura < temp_min )){
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
     noSensor.concat(F("/mensagem2&"));noSensor.concat(HIPOTERMIA);
+    digitalWrite(ALERTA_TEMP, HIGH);
         
   }else{
     Serial.println(F("Erro na captura da temperatura"));
@@ -97,11 +103,13 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
   if(mediaUmidade<= 30){
     noSensor.concat(F("/tipoAlerta3&"));noSensor.concat(NOALERTA);
     noSensor.concat(F("/mensagem3&"));noSensor.concat("");
-  
+    digitalWrite(ALERTA_UMIDADE, LOW  );
   }else{
     noSensor.concat(F("/umidade&")); noSensor.concat(mediaUmidade);
     noSensor.concat(F("/tipoAlerta3&"));noSensor.concat(UMIDADE);
     noSensor.concat(F("/mensagem3&"));noSensor.concat(URINA);
+    digitalWrite(ALERTA_UMIDADE, HIGH);   
+  
   }
   
   

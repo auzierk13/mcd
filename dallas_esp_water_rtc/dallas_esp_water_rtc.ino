@@ -22,6 +22,11 @@
 #define TEMPERATURE_PRECISION 9
 #define WATER_SENSOR A2
 
+#define ALERTA_BPM 9
+#define ALERTA_TEMP 8
+#define ALERTA_UMIDADE 7
+
+
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);
@@ -92,6 +97,11 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
+
+  digitalWrite(ALERTA_BPM, OUTPUT);   // turn the LED on (HIGH is the voltage level)
+  digitalWrite(ALERTA_TEMP, OUTPUT);   // turn the LED on (HIGH is the voltage level)
+  digitalWrite(ALERTA_UMIDADE, OUTPUT);   // turn the LED on (HIGH is the voltage level)            
+
   // set the data rate for the SoftwareSerial port
   esp.begin(baundrate); // start serial port
   esp.println(F("AT\r"));
@@ -109,6 +119,7 @@ void setup() {
 
 
 void loop() {
+  digitalWrite(ALERTA_BPM, HIGH); 
    // Le as informacoes do CI
    myRTC.updateTime();
   byte timeHorNow= myRTC.hours;
@@ -124,18 +135,14 @@ if (esp.available()) {
     
   }
 
-  if(timeHorNow> timeHor){
-    Serial.print(F("*******Passou hora "));
-    Serial.print(timeHor);
-    Serial.println(F(" ********"));
-    timeMin=0;
+  if(timeHorNow> timeHor || timeHorNow==0 ){
+    Serial.print(F("*******Passou hora ")); Serial.print(timeHor); Serial.println(F(" ********"));
+    timeMin=-1;
     timeHor=timeHorNow;
   }
   
   if(timeMinNow> timeMin){
-    Serial.print(F("*******Passou minuto "));
-    Serial.print(timeMin);
-    Serial.println(F(" ********"));
+    Serial.print(F("*******Passou minuto ")); Serial.print(timeMin); Serial.println(F(" ********"));
     
     if(!index==0){    
         Serial.print(F("********Media Tempearatura*******"));
