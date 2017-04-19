@@ -97,31 +97,48 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-
-  digitalWrite(ALERTA_BPM, OUTPUT);   // turn the LED on (HIGH is the voltage level)
-  digitalWrite(ALERTA_TEMP, OUTPUT);   // turn the LED on (HIGH is the voltage level)
-  digitalWrite(ALERTA_UMIDADE, OUTPUT);   // turn the LED on (HIGH is the voltage level)            
-
+  pinMode(ALERTA_BPM, OUTPUT);
+  pinMode(ALERTA_TEMP, OUTPUT);
+  pinMode(ALERTA_UMIDADE, OUTPUT);  
+  
   // set the data rate for the SoftwareSerial port
   esp.begin(baundrate); // start serial port
   esp.println(F("AT\r"));
 
-  setupWifi();
-  setupRTC();
-  getDateTime();
-  setupDs18b20();
+  testLed();
+  setupWifi();       //Inicia o modulo wifi 
+  setupRTC();        //Inicia o relógio 
+  getDateTime();     //Mostra o horario atual
+  setupDs18b20();    //Inicia o sensor de temperatura
   
   timeMin= myRTC.minutes;
   timeSeg= myRTC.seconds;
   timeHor= myRTC.hours;
+  
+ 
 }
+void testLed(){
+  digitalWrite(ALERTA_BPM, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(ALERTA_BPM, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);    
 
+  digitalWrite(ALERTA_TEMP, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(ALERTA_TEMP, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);    
+  
+  digitalWrite(ALERTA_UMIDADE, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(ALERTA_UMIDADE, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);      
+
+  }
 
 
 void loop() {
-  digitalWrite(ALERTA_BPM, HIGH); 
-   // Le as informacoes do CI
-   myRTC.updateTime();
+  
+  myRTC.updateTime();  // Le as informacoes do CI
   byte timeHorNow= myRTC.hours;
   byte timeMinNow= myRTC.minutes;
   byte nowsegundo= myRTC.seconds;
@@ -135,13 +152,13 @@ if (esp.available()) {
     
   }
 
-  if(timeHorNow> timeHor || timeHorNow==0 ){
+  if(timeHorNow> timeHor || timeHorNow == 0 ){ //timeHorNow = 0 Passou um dia
     Serial.print(F("*******Passou hora ")); Serial.print(timeHor); Serial.println(F(" ********"));
-    timeMin=-1;
+    timeMin=0;
     timeHor=timeHorNow;
   }
   
-  if(timeMinNow> timeMin){
+  if(timeMinNow> timeMin  ){
     Serial.print(F("*******Passou minuto ")); Serial.print(timeMin); Serial.println(F(" ********"));
     
     if(!index==0){    
