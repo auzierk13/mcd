@@ -7,7 +7,7 @@ void setupRTC()  {
 // Informacoes iniciais de data e hora
   // Apos setar as informacoes, comente a linha abaixo
   // (segundos, minutos, hora, dia da semana, dia do mes, mes, ano)
-//  myRTC.setDS1302Time(0, 0, 12, 11, 30, 3, 2017);
+//  myRTC.setDS1302Time(0, 2, 17, 17, 25, 4, 2017);
 }
 
 String getDateTime()  {                                                                                            
@@ -25,11 +25,11 @@ String getDateTime()  {
                                                                                  
   Serial.print(F("-"));dateTime.concat(F("-"));                                                                                      
   
-  Serial.print(myRTC.month);dateTime.concat(myRTC.month);                                                                              
+  dateTime.concat( print2digits(myRTC.month));                                                                          
   
   Serial.print(F("-"));dateTime.concat(F("-"));                                                                                      
   
-  Serial.print(myRTC.dayofmonth);dateTime.concat(myRTC.dayofmonth);                                                                         
+  dateTime.concat( print2digits(myRTC.dayofmonth));                                                                   
   
   Serial.print(F("-"));dateTime.concat(F("-"));                                                                                     
   
@@ -47,7 +47,19 @@ String getDateTime()  {
       
 // 
 }                                                                                                         
-                                                                                                             
+
+String print2digits(int number) {
+  String auxDatatime="";
+  if (number >= 0 && number < 10){
+    auxDatatime.concat("0");
+    Serial.write('0');
+    }
+  
+  Serial.print(number);
+  auxDatatime.concat(number);
+  
+  return auxDatatime;
+}                                                                                                             
 //=======================================================================================================    
 //                                                                                                           
 //                                   Printout using BUFFER objects BEGIN                                     
