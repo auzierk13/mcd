@@ -74,7 +74,7 @@ unsigned int index=0;
 //
 //  Temperatura Normal
 //  Pele 35,5 - 37,0 C <--
-#define temp_min  35,5
+#define temp_min 35.5
 #define temp_max  37
 // 
 
@@ -101,10 +101,7 @@ void setup() {
   pinMode(ALERTA_TEMP, OUTPUT);
   pinMode(ALERTA_UMIDADE, OUTPUT);  
   
-  // set the data rate for the SoftwareSerial port
-  esp.begin(baundrate); // start serial port
-  esp.println(F("AT\r"));
-
+ 
   testLed();
   setupWifi();       //Inicia o modulo wifi 
   setupRTC();        //Inicia o relógio 

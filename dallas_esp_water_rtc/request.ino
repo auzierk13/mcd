@@ -17,6 +17,11 @@
 
 void setupWifi() {
 
+   // set the data rate for the SoftwareSerial port
+  esp.begin(baundrate); // start serial port
+  esp.println(F("AT\r"));
+
+
   String WIFI_SSID = F("NET_2G7A5441");
   String WIFI_PASSWORD = F("B37A5441");
 
@@ -73,6 +78,7 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
 
 
 ////////////////////Tratamento da temperatura////////////////////////////////////
+
  noSensor.concat(F("/temperatura&")); noSensor.concat(mediaTemperatura); //envio da temperatura
  if ((mediaTemperatura >= temp_min ) && (mediaTemperatura<= temp_max) ){
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(NOALERTA);
@@ -82,10 +88,9 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
     noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
     noSensor.concat(F("/mensagem2&"));noSensor.concat(FEBRE);
     digitalWrite(ALERTA_TEMP, HIGH);   
-    
   }else if((mediaTemperatura < temp_min )){
-    noSensor.concat(F("/tipoAlerta2&"));noSensor.concat(TEMPERATURA);
-    noSensor.concat(F("/mensagem2&"));noSensor.concat(HIPOTERMIA);
+    noSensor.concat(F("/tipoAlerta2&")); noSensor.concat(TEMPERATURA);
+    noSensor.concat(F("/mensagem2&"));  noSensor.concat(HIPOTERMIA);
     digitalWrite(ALERTA_TEMP, HIGH);
         
   }else{
