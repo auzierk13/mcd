@@ -63,7 +63,7 @@ float printTemperature()
      Serial.print(tempC);
      String soma;
      soma.concat(F(" --- Soma Temperatura["));
-     soma.concat(index);
+     soma.concat(contAmostra);
      soma.concat(F("]"));
      soma.concat(mediaTemperatura);
      Serial.println(soma);

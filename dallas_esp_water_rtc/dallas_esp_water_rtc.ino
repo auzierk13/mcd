@@ -61,7 +61,7 @@ byte timeHor, timeMin, timeSeg;
 float mediaTemperatura=0;
 int mediaUmidade=0;
 int mediaBPM=0;
-unsigned int index=0;
+unsigned int contAmostra=0;
 
 
 // __      __           _    __               _            _                     __        //\               _        
@@ -138,7 +138,7 @@ void loop() {
   myRTC.updateTime();  // Le as informacoes do CI
   byte timeHorNow= myRTC.hours;
   byte timeMinNow= myRTC.minutes;
-  byte nowsegundo= myRTC.seconds;
+  byte timeSegNow= myRTC.seconds;
 
   
 if (esp.available()) {
@@ -158,28 +158,28 @@ if (esp.available()) {
   if(timeMinNow> timeMin  ){
     Serial.print(F("*******Passou minuto ")); Serial.print(timeMin); Serial.println(F(" ********"));
     
-    if(!index==0){    
+    if(!contAmostra==0){    
         Serial.print(F("********Media Tempearatura*******"));
-        mediaTemperatura= mediaTemperatura/index;
+        mediaTemperatura= mediaTemperatura/contAmostra;
         Serial.println( mediaTemperatura);
         
         Serial.print(F("********Media Umidade*******"));
-        mediaUmidade= mediaUmidade/index;
+        mediaUmidade= mediaUmidade/contAmostra;
         Serial.println( mediaUmidade);
         
         coletaDados();
     }
     
     timeMin=timeMinNow;
-    timeSeg=mediaTemperatura=index=0;
+    timeSeg=mediaTemperatura=contAmostra=0;
     
     }else{
 //    Serial.println("No memso minuto "); getTime();
-      if(nowsegundo> timeSeg){
-      index++;
+      if(timeSegNow> timeSeg){
+      contAmostra++;
       printTemperature(); // Use a simple function to print out the data
       printUmidade();
-      timeSeg=nowsegundo;
+      timeSeg=timeSegNow;
       getDateTime();  
       }
     }

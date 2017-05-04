@@ -23,7 +23,7 @@ int printUmidade() {
 
  String soma;
  soma.concat(F(" --- Soma Umidade["));
- soma.concat(index);
+ soma.concat(contAmostra);
  soma.concat(F("]"));
  soma.concat(mediaUmidade);
  Serial.println(soma);
