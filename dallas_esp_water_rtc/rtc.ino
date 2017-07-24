@@ -7,7 +7,7 @@ void setupRTC()  {
 // Informacoes iniciais de data e hora
   // Apos setar as informacoes, comente a linha abaixo
   // (segundos, minutos, hora, dia da semana, dia do mes, mes, ano)
-//  myRTC.setDS1302Time(0, 21, 14, 18, 3, 5, 2017);
+//    myRTC.setDS1302Time(0, 47, 10, 19, 11, 5, 2017);
 }
 
 String getDateTime()  {                                                                                            
@@ -52,7 +52,7 @@ String print2digits(int number) {
   String auxDatatime="";
   if (number >= 0 && number < 10){
     auxDatatime.concat("0");
-    Serial.write('0');
+    Serial.write("0");
     }
   
   Serial.print(number);
