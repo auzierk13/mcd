@@ -18,13 +18,13 @@
 
 
 // Data wire is plugged into port 2 on the Arduino
-#define ONE_WIRE_BUS 10
+#define ONE_WIRE_BUS 8
 #define TEMPERATURE_PRECISION 9
 #define WATER_SENSOR A2
 
-#define ALERTA_BPM 9
-#define ALERTA_TEMP 8
-#define ALERTA_UMIDADE 7
+#define ALERTA_BPM 2
+#define ALERTA_TEMP 3
+#define ALERTA_UMIDADE 4
 
 
 
@@ -34,14 +34,14 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 DeviceAddress tempDeviceAddress; // We'll use this variable to store a found device address
 
-SoftwareSerial esp(2,3); // RX, TX
+SoftwareSerial esp(9,10); // RX, TX
 
 // Creation of the Real Time Clock Object
 // Determina os pinos ligados ao modulo
 // myRTC(clock, data, rst)
-byte RTC_CLOCK= 6;
-byte RTC_DATA= 5;
-byte RTC_RST= 4;
+byte RTC_CLOCK= 7;
+byte RTC_DATA= 6;
+byte RTC_RST= 5;
 
 #define NOALERTA  -1
 #define TEMPERATURA  0
