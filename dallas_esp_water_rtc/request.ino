@@ -1,5 +1,5 @@
 
-///AT+CWJAP_DEF="netvirtua87","2097527020"
+///AT+CWJAP_DEF="NET_2G7A5441","B37A5441"
 //AT+CIFSR – Get local IP address
 //AT+CIPSTATUS – Information about connection
 //AT+CWMODE_DEF?
@@ -124,7 +124,7 @@ if((mediaBPM >= bpm_min ) && (mediaBPM<= bpm_max) ){
   noSensor.concat(F(" Content-Type: charset=utf-8\r\n"));
  
  //  String HOST_PORT   "80";
-  String HOST_NAME= "192.168.0.15";
+  String HOST_NAME= "192.168.0.16";
 
   esp.println("AT+CIPSTART=\"TCP\",\"" + HOST_NAME + "\",80");//start a TCP connection.
   char receive[] = "OK";
